@@ -39,6 +39,7 @@ import { searchAvailable, searchProvider } from "./search.ts";
 import { prepareSubmissionImages, prepareSubmissionImageChannels, prepareProblemSubmissionImageChannels, submissionImagePolicyKey } from "./submission-images.ts";
 import { preparePluginProblemSubmission, requirePluginProblemTarget, type ProblemTypeResolver } from "./plugin-problems.ts";
 import { providerKeyPresent } from "./keys.ts";
+import { ANTIGRAVITY_PROVIDER } from "../core/contracts/antigravity.ts";
 import { CLAUDE_CODE_PROVIDER } from "../core/contracts/claude-code.ts";
 import {
 	extractionEnabled,
@@ -100,7 +101,8 @@ import type {CallUsage} from "../core/contracts.ts";
 /** Fresh check only at new background-run admission; never cancel a run
  * already in progress when the opt-in is switched off. */
 function connectionBackgroundAllowed(provider: string): boolean {
-	return subscriptionBackgroundAllowed(provider) && (provider !== CLAUDE_CODE_PROVIDER || providerKeyPresent(provider));
+	return subscriptionBackgroundAllowed(provider)
+		&& ((provider !== CLAUDE_CODE_PROVIDER && provider !== ANTIGRAVITY_PROVIDER) || providerKeyPresent(provider));
 }
 
 function settlementErrorText(error: unknown): string {
